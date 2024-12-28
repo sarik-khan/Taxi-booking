@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Verify OTP - Taxi Booking System{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h1 class="auth-title">Verify OTP</h1>
+        <p class="auth-subtitle">Enter the verification code sent to your phone</p>
+        <form method="POST" action="{{ url_for('auth.verify_otp') }}" class="auth-form">
+            {{ form.hidden_tag() }}
+            <div class="otp-input-group">
+                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
+                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
+                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
+                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
+            </div>
+            <div class="resend-otp">
+                <span id="timer">Resend OTP in <span id="countdown">30</span>s</span>
+                <button type="button" id="resendBtn" class="btn-link" disabled>Resend OTP</button>
+            </div>
+            <button type="submit" class="btn-primary">Verify</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/otp.js') }}"></script>
+{% endblock %}

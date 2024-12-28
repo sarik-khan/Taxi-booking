@@ -1,0 +1,81 @@
+{# templates/admin/dashboard.html #}
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <h2 class="card-text">{{ total_users }}</h2>
+                <a href="{{ url_for('admin.users') }}" class="btn btn-light">View Users</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Cars</h5>
+                <h2 class="card-text">{{ total_cars }}</h2>
+                <a href="{{ url_for('admin.cars') }}" class="btn btn-light">View Cars</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card bg-warning text-dark">
+            <div class="card-body">
+                <h5 class="card-title">Active Trips</h5>
+                <h2 class="card-text">{{ active_trips }}</h2>
+                <a href="{{ url_for('admin.trips') }}" class="btn btn-light">View Trips</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Recent Bookings</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>User</th>
+                        <th>Car</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in recent_bookings %}
+                    <tr>
+                        <td>{{ booking.id }}</td>
+                        <td>{{ booking.user.name }}</td>
+                        <td>{{ booking.car.name }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if booking.trip_status == 'completed' 
+                                                else 'warning' if booking.trip_status == 'ongoing' 
+                                                else 'secondary' }}">
+                                {{ booking.trip_status }}
+                            </span>
+                        </td>
+                        <td>{{ booking.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.trips') }}#trip-{{ booking.id }}" 
+                               class="btn btn-sm btn-primary">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

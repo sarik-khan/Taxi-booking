@@ -1,0 +1,51 @@
+<form method="POST">
+    <div class="mb-3">
+        <label for="name" class="form-label">Car Name</label>
+        <input type="text" class="form-control" id="name" name="name" 
+               value="{{ car.name if car else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="plate_number" class="form-label">Plate Number</label>
+        <input type="text" class="form-control" id="plate_number" name="plate_number" 
+               value="{{ car.plate_number if car else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="fuel_type" class="form-label">Fuel Type</label>
+        <select class="form-select" id="fuel_type" name="fuel_type" required>
+            {% for type in ['petrol', 'diesel', 'electric', 'hybrid'] %}
+                <option value="{{ type }}" {{ 'selected' if car and car.fuel_type == type else '' }}>
+                    {{ type|title }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="passenger_capacity" class="form-label">Passenger Capacity</label>
+        <input type="number" class="form-control" id="passenger_capacity" 
+               name="passenger_capacity" min="1" 
+               value="{{ car.passenger_capacity if car else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="base_price" class="form-label">Base Price per KM ($)</label>
+        <input type="number" class="form-control" id="base_price" name="base_price" 
+               step="0.01" min="0" value="{{ car.base_price if car else '' }}" required>
+    </div>
+    {% if car %}
+    <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-select" id="status" name="status" required>
+            {% for status in ['available', 'booked', 'maintenance'] %}
+                <option value="{{ status }}" {{ 'selected' if car.status == status else '' }}>
+                    {{ status|title }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endif %}
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">
+            {{ 'Update Car' if car else 'Add Car' }}
+        </button>
+        <a href="{{ url_for('admin.cars') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

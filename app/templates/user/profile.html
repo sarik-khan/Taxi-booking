@@ -1,0 +1,8 @@
+<!-- In profile.html or bookings.html -->
+<div class="booking-details">
+    {% if trip.bill %}
+        <a href="{{ url_for('user.download_bill', trip_id=trip.id) }}" class="btn btn-primary">
+            Download Bill
+        </a>
+    {% endif %}
+</div>

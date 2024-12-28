@@ -1,0 +1,60 @@
+{# templates/admin/users.html #}
+{% extends "admin/base.html" %}
+
+{% block title %}Users Management{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Users Management</h5>
+        <div class="input-group w-auto">
+            <input type="text" class="form-control" id="userSearch" placeholder="Search users...">
+            <button class="btn btn-outline-secondary" type="button">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Joined Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if user.status == 'active' else 'danger' }}">
+                                {{ user.status }}
+                            </span>
+                        </td>
+                        <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <form action="{{ url_for('admin.toggle_user_status', user_id=user.id) }}" 
+                                  method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm 
+                                    {{- ' btn-danger' if user.status == 'active' else ' btn-success' }}">
+                                    {{- 'Block' if user.status == 'active' else 'Activate' }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
